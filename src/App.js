@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 
 import Button from "@material-ui/core/Button";
@@ -26,34 +25,12 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import GithubIcon from "./components/GithubIcon";
+import styles from "./components/styles";
+import EventSummary from "./components/EventSummary";
+import ElevationScroll from "./components/ElevationScroll";
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-        width: '100%',
-        backgroundColor: theme.palette.background.paper,
-    },
-    paper: {
-        padding: theme.spacing(2),
-        color: theme.palette.text.secondary,
-    },
-    chip: {
-        margin: theme.spacing(1),
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-    title: {
-        flexGrow: 1,
-    },
-}));
-
+const useStyles = makeStyles(styles);
 
 const App = (props) => {
     const [log, setLog] = useState('');
@@ -62,8 +39,8 @@ const App = (props) => {
     const [calendars, setCalendars] = useState([]);
     const [calendar, setCalendar] = useState(-1);
     const [events, setEvents] = useState([]);
-    const classes = useStyles();
     const [open, setOpen] = useState(false);
+    const classes = useStyles();
 
     const {gapi} = window;
 
@@ -83,10 +60,6 @@ const App = (props) => {
         }
     };
 
-    /**
-     *  Initializes the API client library and sets up sign-in state
-     *  listeners.
-     */
     const initClient = () => {
         const {auth2, client} = gapi;
         client.init({
@@ -142,34 +115,11 @@ const App = (props) => {
         });
     };
 
-    const eventSummary = (event) => {
-        const {summary, start} = event;
-        return `${summary} - ${moment(start.dateTime).format('dddd, MMMM Do YYYY, h:mm a')}`
-    };
-
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setOpen(false);
-    };
-
-    const ElevationScroll = (props) => {
-        const {children, window} = props;
-        const trigger = useScrollTrigger({
-            disableHysteresis: true,
-            threshold: 0,
-            target: window ? window() : undefined,
-        });
-
-        return React.cloneElement(children, {
-            elevation: trigger ? 4 : 0,
-        });
-    };
-
-    ElevationScroll.propTypes = {
-        children: PropTypes.node.isRequired,
-        window: PropTypes.func,
     };
 
     return <div className={classes.root}>
@@ -182,7 +132,7 @@ const App = (props) => {
                     <Button color="inherit"
                             title="View project on Github."
                             aria-label="View project on Github."
-                            href='https://github.com/asalaidno/google-calednar-with-reactjs'
+                            href='https://github.com/asaladino/google-calendar-with-reactjs'
                             target='_blank'>
                         <GithubIcon/>
                     </Button>
@@ -201,7 +151,7 @@ const App = (props) => {
         </ElevationScroll>
         <Toolbar/>
         <Container>
-            <Box my={2}>
+            <Box>
                 <Grid container spacing={0}>
                     <Grid item xs={12}>
                         <Chip icon={isLoggedIn ? <CheckIcon/> : <CloseIcon/>}
@@ -231,7 +181,7 @@ const App = (props) => {
                                             <ListItemIcon>
                                                 <EventIcon/>
                                             </ListItemIcon>
-                                            <ListItemText primary={eventSummary(event)}/>
+                                            <ListItemText primary={<EventSummary event={event}/>}/>
                                         </ListItem>
                                     })}
                                 </List>
@@ -242,7 +192,7 @@ const App = (props) => {
             </Box>
         </Container>
         <Snackbar
-            anchorOrigin={{vertical: 'top', horizontal: 'center',}}
+            anchorOrigin={{vertical: 'top', horizontal: 'center'}}
             open={open}
             autoHideDuration={2000}
             onClose={handleClose}
@@ -257,8 +207,7 @@ const App = (props) => {
                     onClick={handleClose} href={``}>
                     <CloseIcon/>
                 </IconButton>
-            ]}
-        />
+            ]}/>
     </div>
 };
 

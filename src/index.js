@@ -11,10 +11,6 @@ window.renderReactApp = () => {
         apiKey={keys.apiKey}/>, document.getElementById('root'));
 };
 
-if(window.gapi) {
-    window.renderReactApp();
-}
-
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA

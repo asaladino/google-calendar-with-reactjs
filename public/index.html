@@ -14,7 +14,7 @@
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <div id="root"></div>
 <script async defer src="https://apis.google.com/js/api.js"
-        onload="this.onload=function(){};renderReactApp()"
+        onload="this.onload=function(){};if(window.renderReactApp){window.renderReactApp();}"
         onreadystatechange="if (this.readyState === 'complete') this.onload()">
 </script>
 </body>
